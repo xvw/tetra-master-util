@@ -1,0 +1,3 @@
+(test
+ (name tetra_lib_test)
+ (libraries alcotest lib))

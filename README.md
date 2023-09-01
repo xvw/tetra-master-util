@@ -4,7 +4,7 @@
 
 The card game (from Final Fantasy IX) relies on a lot of implicit probabilities,
 and this little binary served as the basis for the article describing it (in
-French) [on my site](https;//xvw.lol).
+French) [on my site](https://xvw.lol).
 
 ## Setting up the development environment
 

@@ -1,0 +1,4 @@
+(executable
+ (name tetra)
+ (public_name tetra-master-util)
+ (libraries cmdliner lib))
