@@ -20,33 +20,33 @@
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. *)
 
-open Cmdliner
+let docs = Cmdliner.Manpage.s_common_options
 
-let docs = Manpage.s_common_options
-let exits = Cmd.Exit.defaults
-let version = "dev"
-
-let pessimistic_probability, vprob =
-  let doc =
-    "Pessimistic calculation of the probability of victory of an attacking \
-     statistic over a defending statistic."
+let stat_conv =
+  let docv = "The statistic of a card [HKHH]" in
+  let printer = Lib.Stat.pp in
+  let parser value =
+    match Lib.Stat.from_string value with
+    | Some x -> Result.ok x
+    | None ->
+      let message =
+        `Msg (Format.asprintf "[%s] is not a valid stat format" value)
+      in
+      Result.error message
   in
-  let info_p = Cmd.info "pessimistic-probability" ~version ~doc ~exits in
-  let info_v = Cmd.info "vprob" ~version ~doc ~exits in
-  let term =
-    Term.(
-      const Program.pessimistic_probability
-      $ Args.stat_attacker_arg
-      $ Args.stat_defender_arg)
-  in
-  Cmd.v info_p term, Cmd.v info_v term
+  Cmdliner.Arg.conv ~docv (parser, printer)
 ;;
 
-let index =
-  let doc = "Tetra Master util" in
-  let info = Cmd.info Sys.argv.(0) ~version ~doc ~sdocs:docs ~exits in
-  let default = Term.(ret (const (`Help (`Pager, None)))) in
-  Cmd.group info ~default [ pessimistic_probability; vprob ]
+let stat_attacker_arg =
+  let open Cmdliner in
+  let doc = "the statistic of the attacker, ie: 4p23" in
+  let arg = Arg.info ~doc ~docs [ "attacker" ] in
+  Arg.(required & opt (some stat_conv) None & arg)
 ;;
 
-let () = exit @@ Cmd.eval index
+let stat_defender_arg =
+  let open Cmdliner in
+  let doc = "the statistic of the defender, ie: 4p23" in
+  let arg = Arg.info ~doc ~docs [ "defender" ] in
+  Arg.(required & opt (some stat_conv) None & arg)
+;;
