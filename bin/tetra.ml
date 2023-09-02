@@ -28,8 +28,8 @@ let version = "dev"
 
 let pessimistic_probability, vprob =
   let doc =
-    "Pessimistic calculation of the probability of victory of an attacking \
-     statistic over a defending statistic."
+    "Pessimistic calculation of the probability (in a pessimistic way) of \
+     victory of an attacking statistic over a defending statistic."
   in
   let info_p = Cmd.info "pessimistic-probability" ~version ~doc ~exits in
   let info_v = Cmd.info "vprob" ~version ~doc ~exits in
