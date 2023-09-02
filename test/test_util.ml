@@ -21,3 +21,5 @@
    SOFTWARE. *)
 
 let point_testable = Alcotest.testable Lib.Stat.Point.pp Lib.Stat.Point.equal
+let kind_testable = Alcotest.testable Lib.Stat.Kind.pp Lib.Stat.Kind.equal
+let stat_testable = Alcotest.testable Lib.Stat.pp Lib.Stat.equal

@@ -20,8 +20,4 @@
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. *)
 
-let () =
-  Alcotest.run
-    "Tetra Master Util"
-    [ Stat_point_test.cases; Stat_kind_test.cases; Stat_test.cases ]
-;;
+val cases : string * unit Alcotest.test_case list

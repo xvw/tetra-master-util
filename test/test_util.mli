@@ -25,3 +25,5 @@
     Some predefined [Alcotest.testable]. *)
 
 val point_testable : Lib.Stat.Point.t Alcotest.testable
+val kind_testable : Lib.Stat.Kind.t Alcotest.testable
+val stat_testable : Lib.Stat.t Alcotest.testable

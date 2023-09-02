@@ -220,6 +220,23 @@ let test_bound_computation =
     Alcotest.(check @@ list (pair int int)) "should be equal" expected computed)
 ;;
 
+let test_get_smaller =
+  Alcotest.test_case "get the smallest point" `Quick (fun () ->
+    let expected = Lib.Stat.Point.[ p0; p0; pA; p9 ]
+    and computed =
+      Lib.Stat.Point.
+        [ get_smaller p0 p1
+        ; get_smaller p3 p0
+        ; get_smaller pA pF
+        ; get_smaller pD p9
+        ]
+    in
+    Alcotest.(check @@ list Test_util.point_testable)
+      "should be equal"
+      expected
+      computed)
+;;
+
 let cases =
   ( "Lib.Stat.Point"
   , [ test_some_equalities
@@ -228,5 +245,6 @@ let cases =
     ; test_some_point_projection
     ; test_some_point_char_projection
     ; test_bound_computation
+    ; test_get_smaller
     ] )
 ;;

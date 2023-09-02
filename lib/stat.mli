@@ -34,6 +34,11 @@
     + Describes a card's magical defense (represented by data of type
       {!type:Point.t}) *)
 
+(** Describes a complete set of statistics. *)
+type t
+
+(** {1 Elements of statistics} *)
+
 module Point : sig
   (** Describes a point of attack or defense, and a value between [0 and 15] (in
       hexadecimal). *)
@@ -92,6 +97,9 @@ module Point : sig
 
   (** [min_max p] returns the maximal potential value bounded in a point. *)
   val max_bound : t -> int
+
+  (** [get_smaller p1 p2] returns the smaller of the two points. *)
+  val get_smaller : t -> t -> t
 end
 
 module Kind : sig
@@ -115,4 +123,52 @@ module Kind : sig
   (** [compare x y] returns an integer greather than [0] if [x > y], an integer
       lower than [0] if [x < y] and [0] if [x = y]. *)
   val compare : t -> t -> int
+
+  (** pretty-printers for {!type:t}. *)
+  val pp : Format.formatter -> t -> unit
+
+  (** [from_char c] try to build a value of type {!type:t}, if the char is not
+      valid it returns [None]. *)
+  val from_char : char -> t option
+
+  (** [to_char p] transforms a kind to the related char. *)
+  val to_char : t -> char
 end
+
+(** {1 Working with statistics} *)
+
+(** [make ~kind ~attack ~physical_defense ~magical_defense] creates a complete
+    statistic point. *)
+val make
+  :  kind:Kind.t
+  -> attack:Point.t
+  -> physical_defense:Point.t
+  -> magical_defense:Point.t
+  -> t
+
+(** [mk a k p m] is a shortcut for [make]. *)
+val mk : Point.t -> Kind.t -> Point.t -> Point.t -> t
+
+(** [pick_target ~attacker ~defender] will return the statistic targeted by the
+    attacker to the defender. As the software doesn't take real points into
+    account, it only uses offsets to define the target. *)
+val pick_target : attacker:t -> defender:t -> Point.t
+
+(** [pessimistic_probability ~attacker ~defender] returns the pessimistic
+    probability of the attacker's card winning over the opponent.
+
+    We call them pessimistic probabilities because, as the simulator doesn't
+    take into account the real points on the map (which change according to the
+    number of games played and are approximately unreadable from a game), we
+    take the lowest statistic in the range for the attacker and the highest for
+    the opponent. *)
+val pessimistic_probability : attacker:t -> defender:t -> float
+
+(** [from_string str] try to build from the format HKHH a full set of stats. *)
+val from_string : string -> t option
+
+(** [equal x y] returns [true] if [x] and [y] are equal, [false] otherwise. *)
+val equal : t -> t -> bool
+
+(** pretty-printers for {!type:t}. *)
+val pp : Format.formatter -> t -> unit
